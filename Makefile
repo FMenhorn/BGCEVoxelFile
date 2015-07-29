@@ -10,7 +10,7 @@ CFLAGS=  -O3
 # ------------
 LDFLAGS= 
 
-OBJECTSMAIN=$(SOURCESMAIN:.c=.o)
+OBJECTSMAIN=$(SOURCESMAIN:.cpp=.o)
 
 EXECUTABLE=InputReader
 
@@ -19,7 +19,7 @@ all: $(EXECUTABLE)
 $(EXECUTABLE): $(OBJECTSMAIN)
 	$(CC) $(OBJECTSMAIN) -o $@ $(LDFLAGS) 
 
-$(OBJECTSMAIN): %.o : %.c
+$(OBJECTSMAIN): %.o : %.cpp
 	$(CC) $(CFLAGS) -c $< -o $@
 	
 clean:
