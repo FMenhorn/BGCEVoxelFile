@@ -33,7 +33,9 @@ int main(int argc, char** argv)
   ifstream infile;
   ofstream outfile;
 
-  /// TODO: Add open success checks
+  /// TODO:
+  /// 1. Add open success checks
+  /// 2. Make infile and outfile user inputs
   infile.open("STLFiles/Star.dat", ios::binary | ios::in);
   outfile.open("Star.vtk", ios::out);
 
