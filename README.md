@@ -2,6 +2,7 @@
 Steps:
 
 1. Convert `*.stl` file to voxelized `*.dat` file using the Voxelizer with size of voxel `voxelSize`. You need CVMLCPP for this - ask Friedi for more details.
+	~/Path/To/CVMLCPP/bin/voxelize ./<stl_file>.stl <voxelSize>
 
 2. Open `InputReader.cpp`.
    - Change `deltaDim` (line 29) to `voxelSize` value.

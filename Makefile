@@ -1,5 +1,7 @@
 # Include files
 SOURCESMAIN= InputReader.cpp
+
+SOURCESBASIC= VtkWriter.cpp
 # Compiler
 # --------
 CC=g++
@@ -12,14 +14,19 @@ LDFLAGS=
 
 OBJECTSMAIN=$(SOURCESMAIN:.cpp=.o)
 
+OBJECTSBASIC=$(SOURCESBASIC:.cpp=.o)
+
 EXECUTABLE=InputReader
 
 all: $(EXECUTABLE)
 
-$(EXECUTABLE): $(OBJECTSMAIN)
-	$(CC) $(OBJECTSMAIN) -o $@ $(LDFLAGS) 
+$(EXECUTABLE): $(OBJECTSBASIC) $(OBJECTSMAIN)
+	$(CC) $(OBJECTSBASIC) $(OBJECTSMAIN) -o $@ $(LDFLAGS) 
 
 $(OBJECTSMAIN): %.o : %.cpp
+	$(CC) $(CFLAGS) -c $< -o $@
+
+$(OBJECTSBASIC): %.o : %.cpp
 	$(CC) $(CFLAGS) -c $< -o $@
 	
 clean:
