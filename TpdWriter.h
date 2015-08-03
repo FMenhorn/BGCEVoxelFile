@@ -26,6 +26,9 @@ public:
 	void writeGreyScaleFilters(std::ofstream &outfile);
 
 	void writeCellList(std::string variableName, std::list<int> cellIndices, std::ofstream &outfile);
+
+	static int getCellIndex(int xCoord, int yCoord, int zCoord, std::vector<int> dimensions);
+	static std::vector<int> getCellCoordinates(int index, std::vector<int> dimensions);
 };
 
 #endif /* TPDWRITER_H_ */

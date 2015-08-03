@@ -65,3 +65,23 @@ void TpdWriter::writeCellList(std::string variableName,
 
 }
 
+int TpdWriter::getCellIndex(int xCoord, int yCoord, int zCoord,
+		std::vector<int> dimensions) {
+	return xCoord + dimensions[0]*(yCoord + dimensions[1] * zCoord);
+}
+
+std::vector<int> TpdWriter::getCellCoordinates(int index,
+		std::vector<int> dimensions) {
+	std::vector<int> returnCoords(3);
+
+	returnCoords[0] = index%dimensions[0];
+	//temporary
+	returnCoords[2] = (index-returnCoords[0])/dimensions[0];
+	returnCoords[1] = returnCoords[2] % dimensions[1];
+	returnCoords[2] = (returnCoords[2] - returnCoords[1]) / dimensions[1];
+
+	return returnCoords;
+
+}
+
+
