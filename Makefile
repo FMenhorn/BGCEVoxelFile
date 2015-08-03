@@ -30,4 +30,4 @@ $(OBJECTSBASIC): %.o : %.cpp
 	$(CC) $(CFLAGS) -c $< -o $@
 	
 clean:
-	rm -f $(EXECUTABLE) $(OBJECTSMAIN)
+	rm -f $(EXECUTABLE) $(OBJECTSBASIC) $(OBJECTSMAIN)
