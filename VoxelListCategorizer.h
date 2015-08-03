@@ -34,6 +34,10 @@ public:
 		return activeIndices;
 	}
 
+	const std::list<int>& getPassiveIndices() const {
+		return passiveIndices;
+	}
+
 	const std::list<int>& getFixedIndicesX() const {
 		return fixedIndicesX;
 	}
