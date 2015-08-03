@@ -9,6 +9,7 @@
 #define TPDWRITER_H_
 
 #include <fstream>
+#include <list>
 #include <string>
 #include <vector>
 
@@ -20,7 +21,7 @@ public:
 	TpdWriter();
 	virtual ~TpdWriter();
 
-	void writeHeader(std::ofstream &outfile);
+	void writeHeader(std::ofstream &outfile, std::string outputName);
 
 	void writeCellList(std::string variableName, std::list<int> cellIndices);
 };

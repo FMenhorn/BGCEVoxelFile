@@ -1,7 +1,7 @@
 # Include files
 SOURCESMAIN= InputReader.cpp
 
-SOURCESBASIC= VtkWriter.cpp
+SOURCESBASIC= VtkWriter.cpp TpdWriter.cpp
 # Compiler
 # --------
 CC=g++

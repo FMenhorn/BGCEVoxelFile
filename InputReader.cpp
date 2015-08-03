@@ -7,6 +7,7 @@
 #include <vector>
 
 #include "VtkWriter.h"
+#include "TpdWriter.h"
 
 /* Converts the voxelizer output file to an VTK file that can be viewed in Paraview. */
 
@@ -67,6 +68,13 @@ int main(int argc, char** argv)
   outfile.close();
 
   free(data_buffer);
+
+  outfile.open("ToPyTest.tpd", ios::out);
+  TpdWriter tpdWriter;
+
+  tpdWriter.writeHeader(outfile, std::string("fooFoOFOO"));
+
+  outfile.close();
 
   return 0;
 }
