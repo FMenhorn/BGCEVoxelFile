@@ -117,11 +117,26 @@ void TpdWriter::writeCellList(std::ofstream &outfile,
 		std::string variableName,
 		std::list<int> cellIndices) {
 
+
 	outfile<< variableName << ": ";
-	for (auto listIterator = cellIndices.begin(); listIterator != cellIndices.end(); ++listIterator)
+
+	if(cellIndices.size()>0)
 	{
-		outfile << *listIterator+1 << "; ";
+
+		auto listIterator = cellIndices.begin();
+		outfile << *listIterator +1;
+		++listIterator;
+
+		if(cellIndices.size()>1)
+		{
+			for (; listIterator != cellIndices.end(); ++listIterator)
+			{
+				outfile << "; "<< *listIterator +1;
+			}
+		}
 	}
+
+
 	outfile << std::endl;
 
 }
