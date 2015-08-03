@@ -7,7 +7,7 @@
 
 #include "TpdWriter.h"
 
-#include <math.h>
+#include <iostream>
 
 TpdWriter::TpdWriter() {
 	// TODO Auto-generated constructor stub
@@ -19,7 +19,7 @@ TpdWriter::~TpdWriter() {
 }
 
 void TpdWriter::writeHeader(std::ofstream &outfile, std::string outputName){
-	outfile << "[BGCE Project ToPy Definition File 2015]\n";
+	outfile << "[ToPy Problem Definition File v2007]\n";
 	outfile << "\n";
 
 	outfile << "PROB_TYPE:   comp\n";
@@ -32,7 +32,7 @@ void TpdWriter::writeHeader(std::ofstream &outfile, std::string outputName){
 	outfile << "NUM_ITER:    10\n";
 }
 
-void TpdWriter::writeDimensions(std::ofstream &outfile, const long int dimensions[3]){
+void TpdWriter::writeDimensions(std::ofstream &outfile, std::vector<int> dimensions){
 	outfile << "NUM_ELEM_X:  " << dimensions[0] << "\n";
 	outfile << "NUM_ELEM_Y:  " << dimensions[1] << "\n";
 	outfile << "NUM_ELEM_Z:  " << dimensions[2] << "\n";
@@ -73,20 +73,18 @@ void TpdWriter::writeLoads(std::ofstream &outfile, std::string variableName, dou
 	outfile << variableName << ": " << value << "@" << number << "\n";
 }
 
-void TpdWriter::calculateFixtureNodes(VoxelListCategorizer &voxelListCategorizer,std::vector<int> cellArray, const long int dimensions[3]){
-	std::vector<int> coordinates(3);
-	std::vector<double> distance(3);
+void TpdWriter::calculateFixtureNodes(std::string data, VoxelListCategorizer &voxelListCategorizer,std::vector<int> cellArray, std::vector<int> dimensions){
+	std::vector<int> coordinates;
 
 	std::list<int> fixedIndicesXTmp, fixedIndicesYTmp, fixedIndicesZTmp;
-	switch(data)
-	{
-	case "Star":
+
+	if(data.compare("Star")==0	){
 		for(int i = 0; i < cellArray.size(); ++i){
 			if(cellArray[i] == 1){
 				coordinates = getCellCoordinates(i,dimensions);
-
-				if(coordinates[0] <= 3 || coordinates[0] => dimension[0]-3 ||
-				   coordinates[2] <= 3 || coordinates[2] => dimension[2]-3){
+				if(coordinates[0] <= 1 || coordinates[0] >= dimensions[0]-1 ||
+				   coordinates[2] <= 1 || coordinates[2] >= dimensions[2]-1){
+					std::cout << "Coordinates: " << i << "|" << coordinates[0] << "," << coordinates[1] << "," << coordinates[2] << "\n";
 					fixedIndicesXTmp.push_back(i);
 					fixedIndicesYTmp.push_back(i);
 					fixedIndicesZTmp.push_back(i);
@@ -97,6 +95,22 @@ void TpdWriter::calculateFixtureNodes(VoxelListCategorizer &voxelListCategorizer
 		voxelListCategorizer.setFixedIndicesY(fixedIndicesYTmp);
 		voxelListCategorizer.setFixedIndicesZ(fixedIndicesZTmp);
 	}
+	std::cout << "Length" << cellArray.size() << "," << voxelListCategorizer.getFixedIndicesX().size() << std::endl;
+}
+
+void TpdWriter::calculateLoadNodes(std::string data, VoxelListCategorizer &voxelListCategorizer,std::vector<int> cellArray, std::vector<int> dimensions){
+	std::vector<int> coordinates(3);
+	std::list<int> loadIndicesXTmp, loadIndicesYTmp, loadIndicesZTmp;
+
+	if(data.compare("Star")==0	){
+		coordinates[0] = static_cast<int>(dimensions[0]/2);
+		coordinates[1] = static_cast<int>(dimensions[1]/2);
+		coordinates[2] = static_cast<int>(dimensions[2]/2);
+
+		loadIndicesYTmp.push_back(getCellIndex(coordinates[0],coordinates[1],coordinates[2],dimensions));
+
+		voxelListCategorizer.setLoadedIndicesY(loadIndicesYTmp);
+	}
 }
 
 void TpdWriter::writeCellList(std::ofstream &outfile,
@@ -106,9 +120,29 @@ void TpdWriter::writeCellList(std::ofstream &outfile,
 	outfile<< variableName << ": ";
 	for (auto listIterator = cellIndices.begin(); listIterator != cellIndices.end(); ++listIterator)
 	{
-		outfile << *listIterator << "; ";
+		outfile << *listIterator+1 << "; ";
 	}
 	outfile << std::endl;
 
 }
+
+int TpdWriter::getCellIndex(int xCoord, int yCoord, int zCoord,
+		std::vector<int> dimensions) {
+	return xCoord + dimensions[0]*(yCoord + dimensions[1] * zCoord);
+}
+
+std::vector<int> TpdWriter::getCellCoordinates(int index,
+		std::vector<int> dimensions) {
+	std::vector<int> returnCoords(3);
+
+	returnCoords[0] = index%dimensions[0];
+	//temporary
+	returnCoords[2] = (index-returnCoords[0])/dimensions[0];
+	returnCoords[1] = returnCoords[2] % dimensions[1];
+	returnCoords[2] = (returnCoords[2] - returnCoords[1]) / dimensions[1];
+
+	return returnCoords;
+
+}
+
 

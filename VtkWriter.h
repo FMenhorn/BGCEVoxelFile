@@ -20,7 +20,7 @@ public:
 	virtual ~VtkWriter();
 
 	void writeHeader(std::ofstream &outfile);
-	void writeStructuredGrid(std::ofstream &outfile,const long int dimensions[3],const float spacing);
+	void writeStructuredGrid(std::ofstream &outfile,std::vector<int> dimensions,const float spacing);
 	void writeScalars(std::ofstream &outfile, std::string scalarType, const std::vector<int> &scalars);
 };
 

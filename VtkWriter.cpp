@@ -23,9 +23,9 @@ void VtkWriter::writeHeader(std::ofstream &outfile) {
 	  outfile << "\n";
 }
 
-void VtkWriter::writeStructuredGrid(std::ofstream &outfile,const long int dimensions[3],const float spacing){
+void VtkWriter::writeStructuredGrid(std::ofstream &outfile,std::vector<int> dimensions,const float spacing){
 	  outfile << "DATASET STRUCTURED_POINTS\n";
-	  outfile << "DIMENSIONS  " << (int)dimensions[2] << " " << (int)dimensions[1] << " " << (int)dimensions[0] << "\n";
+	  outfile << "DIMENSIONS  " << (int)dimensions[0] << " " << (int)dimensions[1] << " " << (int)dimensions[2] << "\n";
 	  outfile << "ORIGIN " << 0 << " " << 0 << " " << 0 << "\n";
 	  outfile << "SPACING " << spacing << " " << spacing << " " << spacing << "\n";
 	  outfile << "\n";

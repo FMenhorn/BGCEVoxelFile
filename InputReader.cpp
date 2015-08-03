@@ -34,7 +34,8 @@ int main(int argc, char** argv)
   dimensions_buffer = new char[size_of_dimensions_buffer];
   float deltaDim = 0.05;
 
-  long int dimensions[3];
+  long int dimensionsLong[3];
+  std::vector<int> dimensions(3);
 
   VtkWriter vtkWriter;
 
@@ -50,7 +51,10 @@ int main(int argc, char** argv)
   /* Read in the dimensions from the voxelizer output file. Skip the first byte (useless) */
   infile.seekg(1, ios::beg);
   infile.read(dimensions_buffer, size_of_dimensions_buffer);
-  std::memcpy(&dimensions[0], &dimensions_buffer[0], 24);
+  std::memcpy(&dimensionsLong[0], &dimensions_buffer[0], 24);
+  for(int i = 0; i<3; ++i){
+	  dimensions[2-i] = static_cast<int>(dimensionsLong[i]);
+  }
   free(dimensions_buffer);
   int total_points = dimensions[0]*dimensions[1]*dimensions[2];
 
@@ -77,7 +81,8 @@ int main(int argc, char** argv)
 
   tpdWriter.writeHeader(outfile, std::string("fooFoOFOO"));
   tpdWriter.writeDimensions(outfile, dimensions);
-  tpdWriter.calculateFixtureNodes(voxelListCategorizer, voxelArray, dimensions);
+  tpdWriter.calculateFixtureNodes(std::string("Star"),voxelListCategorizer, voxelArray, dimensions);
+  tpdWriter.calculateLoadNodes(std::string("Star"), voxelListCategorizer, voxelArray, dimensions);
   tpdWriter.writeNodes(outfile, voxelListCategorizer);
 
   tpdWriter.writeGreyScaleFilters(outfile);

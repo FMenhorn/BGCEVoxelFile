@@ -15,7 +15,7 @@
 //easy outputting into a topology optimizer input file
 class VoxelListCategorizer {
 public:
-	enum VoxelCategories {FIXED_X=3, FIXED_Y=1, FIXED_Z=4,
+	enum VoxelCategories {FIXED_X=3, FIXED_Y=8, FIXED_Z=4,
 		LOADED_X=13, LOADED_Y=6, LOADED_Z=5,
 		ACTIVE=2, PASSIVE=0};
 

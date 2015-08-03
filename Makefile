@@ -6,7 +6,7 @@ SOURCESBASIC= VtkWriter.cpp TpdWriter.cpp VoxelListCategorizer.cpp
 # --------
 CC=g++
 
-CFLAGS=  -O3 -std=c++0x
+CFLAGS=  -g -O3 -std=c++0x
 
 # Linker flags
 # ------------
