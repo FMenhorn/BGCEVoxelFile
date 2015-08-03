@@ -25,7 +25,7 @@ public:
 	void writeDimensions(std::ofstream &outfile, const long int dimensions[3]);
 	void writeGreyScaleFilters(std::ofstream &outfile);
 
-	void writeCellList(std::string variableName, std::list<int> cellIndices);
+	void writeCellList(std::string variableName, std::list<int> cellIndices, std::ofstream &outfile);
 };
 
 #endif /* TPDWRITER_H_ */

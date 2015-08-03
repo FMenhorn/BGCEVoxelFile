@@ -6,7 +6,7 @@ SOURCESBASIC= VtkWriter.cpp TpdWriter.cpp
 # --------
 CC=g++
 
-CFLAGS=  -O3
+CFLAGS=  -O3 -std=c++0x
 
 # Linker flags
 # ------------

@@ -50,3 +50,18 @@ void TpdWriter::writeGreyScaleFilters(std::ofstream &outfile){
 	outfile << "Q_CON      : 1\n";
 	outfile << "Q_MAX      : 5\n";
 }
+
+
+void TpdWriter::writeCellList(std::string variableName,
+		std::list<int> cellIndices, std::ofstream &outfile) {
+
+	outfile<< std::endl;
+	outfile<< variableName << ": ";
+	for (auto listIterator = cellIndices.begin(); listIterator != cellIndices.end(); ++listIterator)
+	{
+		outfile << *listIterator << "; ";
+	}
+	outfile << std::endl;
+
+}
+
