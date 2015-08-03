@@ -1,7 +1,7 @@
 # Include files
 SOURCESMAIN= InputReader.cpp
 
-SOURCESBASIC= VtkWriter.cpp TpdWriter.cpp
+SOURCESBASIC= VtkWriter.cpp TpdWriter.cpp VoxelListCategorizer.cpp
 # Compiler
 # --------
 CC=g++

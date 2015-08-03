@@ -8,6 +8,7 @@
 
 #include "VtkWriter.h"
 #include "TpdWriter.h"
+#include "VoxelListCategorizer.h"
 
 /* Converts the voxelizer output file to an VTK file that can be viewed in Paraview. */
 
@@ -20,7 +21,7 @@ int main(int argc, char** argv)
 
   char *data_buffer;
   int size_of_data_buffer = 1;
-  std::vector<double> voxelArray;
+  std::vector<int> voxelArray;
   data_buffer = new char[size_of_data_buffer];
 
   /* The dimensions_buffer is used to pick up the x-, y-, and z-number of voxels in the voxelizer output file.
@@ -71,9 +72,12 @@ int main(int argc, char** argv)
 
   outfile.open("ToPyTest.tpd", ios::out);
   TpdWriter tpdWriter;
+  VoxelListCategorizer voxelListCategorizer;
+  voxelListCategorizer.readArrayOfCells(voxelArray);
 
   tpdWriter.writeHeader(outfile, std::string("fooFoOFOO"));
   tpdWriter.writeDimensions(outfile, dimensions);
+  tpdWriter.writeNodes(outfile, voxelListCategorizer);
 
   tpdWriter.writeGreyScaleFilters(outfile);
 

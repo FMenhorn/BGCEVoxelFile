@@ -21,7 +21,7 @@ public:
 
 	void writeHeader(std::ofstream &outfile);
 	void writeStructuredGrid(std::ofstream &outfile,const long int dimensions[3],const float spacing);
-	void writeScalars(std::ofstream &outfile, std::string scalarType, const std::vector<double> &scalars);
+	void writeScalars(std::ofstream &outfile, std::string scalarType, const std::vector<int> &scalars);
 };
 
 #endif /* VTKWRITER_H_ */
