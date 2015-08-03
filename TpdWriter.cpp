@@ -33,3 +33,18 @@ void TpdWriter::writeHeader(std::ofstream &outfile, std::string outputName){
 	  outfile << "FILT_RAD:    1.5\n";
 	  outfile << "ELEM_K:      H8\n";
 }
+
+
+void TpdWriter::writeCellList(std::string variableName,
+		std::list<int> cellIndices, std::ofstream &outfile) {
+
+	outfile<< std::endl;
+	outfile<< variableName << ": ";
+	for (auto listIterator = cellIndices.begin(); listIterator != cellIndices.end(); ++listIterator)
+	{
+		outfile << *listIterator << "; ";
+	}
+	outfile << std::endl;
+
+}
+

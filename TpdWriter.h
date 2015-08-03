@@ -23,7 +23,7 @@ public:
 
 	void writeHeader(std::ofstream &outfile, std::string outputName);
 
-	void writeCellList(std::string variableName, std::list<int> cellIndices);
+	void writeCellList(std::string variableName, std::list<int> cellIndices, std::ofstream &outfile);
 };
 
 #endif /* TPDWRITER_H_ */
