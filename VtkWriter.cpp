@@ -32,7 +32,7 @@ void VtkWriter::writeStructuredGrid(std::ofstream &outfile,const long int dimens
 }
 
 
-void VtkWriter::writeScalars(std::ofstream &outfile, std::string scalarType, const std::vector<double> &scalars){
+void VtkWriter::writeScalars(std::ofstream &outfile, std::string scalarType, const std::vector<int> &scalars){
 	  int totalSize = scalars.size();
 	  outfile << "POINT_DATA " << totalSize << " \n";
 	  outfile << "SCALARS " << scalarType << " float 1 \n";

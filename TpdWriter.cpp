@@ -51,11 +51,29 @@ void TpdWriter::writeGreyScaleFilters(std::ofstream &outfile){
 	outfile << "Q_MAX      : 5\n";
 }
 
+void TpdWriter::writeNodes(std::ofstream &outfile, VoxelListCategorizer &voxelListCategorizer){
+	writeCellList(outfile, std::string("FXTR_NODE_X"), voxelListCategorizer.getFixedIndicesX());
+	writeCellList(outfile, std::string("FXTR_NODE_Y"), voxelListCategorizer.getFixedIndicesY());
+	writeCellList(outfile, std::string("FXTR_NODE_Z"), voxelListCategorizer.getFixedIndicesZ());
 
-void TpdWriter::writeCellList(std::string variableName,
-		std::list<int> cellIndices, std::ofstream &outfile) {
+	writeCellList(outfile, std::string("LOAD_NODE_X"), voxelListCategorizer.getLoadedIndicesX());
+	writeCellList(outfile, std::string("LOAD_NODE_Y"), voxelListCategorizer.getLoadedIndicesY());
+	writeCellList(outfile, std::string("LOAD_NODE_Z"), voxelListCategorizer.getLoadedIndicesZ());
 
-	outfile<< std::endl;
+	writeCellList(outfile, std::string("PASV_ELEM"), voxelListCategorizer.getPassiveIndices());
+	writeCellList(outfile, std::string("ACTV_ELEM"), voxelListCategorizer.getActiveIndices());
+
+	writeLoads(outfile, "LOAD_VALU_Y", -1, voxelListCategorizer.getLoadedIndicesY().size());
+}
+
+void TpdWriter::writeLoads(std::ofstream &outfile, std::string variableName, double value, int number){
+	outfile << variableName << ": " << value << "@" << number << "\n";
+}
+
+void TpdWriter::writeCellList(std::ofstream &outfile,
+		std::string variableName,
+		std::list<int> cellIndices) {
+
 	outfile<< variableName << ": ";
 	for (auto listIterator = cellIndices.begin(); listIterator != cellIndices.end(); ++listIterator)
 	{

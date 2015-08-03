@@ -13,6 +13,7 @@
 #include <string>
 #include <vector>
 
+#include "VoxelListCategorizer.h"
 /*
  *
  */
@@ -24,8 +25,10 @@ public:
 	void writeHeader(std::ofstream &outfile, const std::string outputName);
 	void writeDimensions(std::ofstream &outfile, const long int dimensions[3]);
 	void writeGreyScaleFilters(std::ofstream &outfile);
+	void writeNodes(std::ofstream &outfile, VoxelListCategorizer &voxelListCategorizer);
+	void writeLoads(std::ofstream &outfile, std::string variableName, double value, int number);
 
-	void writeCellList(std::string variableName, std::list<int> cellIndices, std::ofstream &outfile);
+	void writeCellList(std::ofstream &outfile, std::string variableName, std::list<int> cellIndices);
 };
 
 #endif /* TPDWRITER_H_ */
