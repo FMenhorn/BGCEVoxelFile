@@ -73,6 +73,9 @@ int main(int argc, char** argv)
   TpdWriter tpdWriter;
 
   tpdWriter.writeHeader(outfile, std::string("fooFoOFOO"));
+  tpdWriter.writeDimensions(outfile, dimensions);
+
+  tpdWriter.writeGreyScaleFilters(outfile);
 
   outfile.close();
 

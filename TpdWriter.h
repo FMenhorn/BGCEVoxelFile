@@ -21,7 +21,9 @@ public:
 	TpdWriter();
 	virtual ~TpdWriter();
 
-	void writeHeader(std::ofstream &outfile, std::string outputName);
+	void writeHeader(std::ofstream &outfile, const std::string outputName);
+	void writeDimensions(std::ofstream &outfile, const long int dimensions[3]);
+	void writeGreyScaleFilters(std::ofstream &outfile);
 
 	void writeCellList(std::string variableName, std::list<int> cellIndices);
 };
