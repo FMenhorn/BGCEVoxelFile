@@ -30,6 +30,34 @@ public:
 	void addCellToLists(int cellIndex, VoxelCategories cellFlag);
 	void readArrayOfCells(std::vector<int> cellArray);
 
+	const std::list<int>& getActiveIndices() const {
+		return activeIndices;
+	}
+
+	const std::list<int>& getFixedIndicesX() const {
+		return fixedIndicesX;
+	}
+
+	const std::list<int>& getLoadedIndicesX() const {
+		return loadedIndicesX;
+	}
+
+	const std::list<int>& getFixedIndicesY() const {
+		return fixedIndicesX;
+	}
+
+	const std::list<int>& getLoadedIndicesY() const {
+		return loadedIndicesX;
+	}
+
+	const std::list<int>& getFixedIndicesZ() const {
+		return fixedIndicesX;
+	}
+
+	const std::list<int>& getLoadedIndicesZ() const {
+		return loadedIndicesX;
+	}
+
 
 private:
 	std::list<int> fixedIndicesX, fixedIndicesY, fixedIndicesZ;
