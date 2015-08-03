@@ -17,9 +17,6 @@ VoxelListCategorizer::~VoxelListCategorizer() {
 }
 
 void VoxelListCategorizer::addCellToLists(int cellIndex, VoxelCategories cellFlag) {
-
-
-
 	switch(cellFlag)
 	{
 	case FIXED_X:

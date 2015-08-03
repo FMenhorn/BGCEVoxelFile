@@ -28,6 +28,8 @@ public:
 	void writeNodes(std::ofstream &outfile, VoxelListCategorizer &voxelListCategorizer);
 	void writeLoads(std::ofstream &outfile, std::string variableName, double value, int number);
 
+	void calculateFixtureNodes(VoxelListCategorizer &voxelListCategorizer,std::vector<int> cellArray, const long int dimensions[3]);
+
 	void writeCellList(std::ofstream &outfile, std::string variableName, std::list<int> cellIndices);
 };
 

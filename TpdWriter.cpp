@@ -7,6 +7,8 @@
 
 #include "TpdWriter.h"
 
+#include <math.h>
+
 TpdWriter::TpdWriter() {
 	// TODO Auto-generated constructor stub
 
@@ -27,6 +29,7 @@ void TpdWriter::writeHeader(std::ofstream &outfile, std::string outputName){
 	outfile << "VOL_FRAC:    0.15\n";
 	outfile << "FILT_RAD:    1.5\n";
 	outfile << "ELEM_K:      H8\n";
+	outfile << "NUM_ITER:    10\n";
 }
 
 void TpdWriter::writeDimensions(std::ofstream &outfile, const long int dimensions[3]){
@@ -68,6 +71,32 @@ void TpdWriter::writeNodes(std::ofstream &outfile, VoxelListCategorizer &voxelLi
 
 void TpdWriter::writeLoads(std::ofstream &outfile, std::string variableName, double value, int number){
 	outfile << variableName << ": " << value << "@" << number << "\n";
+}
+
+void TpdWriter::calculateFixtureNodes(VoxelListCategorizer &voxelListCategorizer,std::vector<int> cellArray, const long int dimensions[3]){
+	std::vector<int> coordinates(3);
+	std::vector<double> distance(3);
+
+	std::list<int> fixedIndicesXTmp, fixedIndicesYTmp, fixedIndicesZTmp;
+	switch(data)
+	{
+	case "Star":
+		for(int i = 0; i < cellArray.size(); ++i){
+			if(cellArray[i] == 1){
+				coordinates = getCellCoordinates(i,dimensions);
+
+				if(coordinates[0] <= 3 || coordinates[0] => dimension[0]-3 ||
+				   coordinates[2] <= 3 || coordinates[2] => dimension[2]-3){
+					fixedIndicesXTmp.push_back(i);
+					fixedIndicesYTmp.push_back(i);
+					fixedIndicesZTmp.push_back(i);
+			    }
+			}
+		}
+		voxelListCategorizer.setFixedIndicesX(fixedIndicesXTmp);
+		voxelListCategorizer.setFixedIndicesY(fixedIndicesYTmp);
+		voxelListCategorizer.setFixedIndicesZ(fixedIndicesZTmp);
+	}
 }
 
 void TpdWriter::writeCellList(std::ofstream &outfile,

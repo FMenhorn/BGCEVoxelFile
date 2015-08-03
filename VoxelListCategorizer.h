@@ -15,15 +15,11 @@
 //easy outputting into a topology optimizer input file
 class VoxelListCategorizer {
 public:
-	enum VoxelCategories {FIXED_X=3, FIXED_Y, FIXED_Z,
-		LOADED_X=13, LOADED_Y, LOADED_Z,
+	enum VoxelCategories {FIXED_X=3, FIXED_Y=1, FIXED_Z=4,
+		LOADED_X=13, LOADED_Y=6, LOADED_Z=5,
 		ACTIVE=2, PASSIVE=0};
 
-
 	VoxelListCategorizer();
-
-
-
 
 	virtual ~VoxelListCategorizer();
 
@@ -47,28 +43,57 @@ public:
 	}
 
 	const std::list<int>& getFixedIndicesY() const {
-		return fixedIndicesX;
+		return fixedIndicesY;
 	}
 
 	const std::list<int>& getLoadedIndicesY() const {
-		return loadedIndicesX;
+		return loadedIndicesY;
 	}
 
 	const std::list<int>& getFixedIndicesZ() const {
-		return fixedIndicesX;
+		return fixedIndicesZ;
 	}
 
 	const std::list<int>& getLoadedIndicesZ() const {
-		return loadedIndicesX;
+		return loadedIndicesZ;
 	}
 
+	void setActiveIndices(const std::list<int>& activeIndices) {
+		this->activeIndices = activeIndices;
+	}
+
+	void setFixedIndicesX(const std::list<int>& fixedIndicesX) {
+		this->fixedIndicesX = fixedIndicesX;
+	}
+
+	void setFixedIndicesY(const std::list<int>& fixedIndicesY) {
+		this->fixedIndicesY = fixedIndicesY;
+	}
+
+	void setFixedIndicesZ(const std::list<int>& fixedIndicesZ) {
+		this->fixedIndicesZ = fixedIndicesZ;
+	}
+
+	void setLoadedIndicesX(const std::list<int>& loadedIndicesX) {
+		this->loadedIndicesX = loadedIndicesX;
+	}
+
+	void setLoadedIndicesY(const std::list<int>& loadedIndicesY) {
+		this->loadedIndicesY = loadedIndicesY;
+	}
+
+	void setLoadedIndicesZ(const std::list<int>& loadedIndicesZ) {
+		this->loadedIndicesZ = loadedIndicesZ;
+	}
+
+	void setPassiveIndices(const std::list<int>& passiveIndices) {
+		this->passiveIndices = passiveIndices;
+	}
 
 private:
 	std::list<int> fixedIndicesX, fixedIndicesY, fixedIndicesZ;
 	std::list<int> loadedIndicesX, loadedIndicesY, loadedIndicesZ;
 	std::list<int> activeIndices, passiveIndices;
-
-
 };
 
 #endif /* VOXELLISTCATEGORIZER_H_ */

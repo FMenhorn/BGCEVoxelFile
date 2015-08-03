@@ -77,6 +77,7 @@ int main(int argc, char** argv)
 
   tpdWriter.writeHeader(outfile, std::string("fooFoOFOO"));
   tpdWriter.writeDimensions(outfile, dimensions);
+  tpdWriter.calculateFixtureNodes(voxelListCategorizer, voxelArray, dimensions);
   tpdWriter.writeNodes(outfile, voxelListCategorizer);
 
   tpdWriter.writeGreyScaleFilters(outfile);
