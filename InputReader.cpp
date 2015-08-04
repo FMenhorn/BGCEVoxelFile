@@ -77,7 +77,7 @@ int main(int argc, char** argv)
   outfile.open("ToPyTest.tpd", ios::out);
   TpdWriter tpdWriter;
   VoxelListCategorizer voxelListCategorizer;
-  voxelListCategorizer.readArrayOfCells(voxelArray);
+  voxelListCategorizer.readArrayOfCells(voxelArray, dimensions);
 
   tpdWriter.writeHeader(outfile, std::string("fooFoOFOO"));
   tpdWriter.writeDimensions(outfile, dimensions);
