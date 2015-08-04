@@ -29,7 +29,7 @@ void TpdWriter::writeHeader(std::ofstream &outfile, std::string outputName){
 	outfile << "VOL_FRAC:    0.15\n";
 	outfile << "FILT_RAD:    1.5\n";
 	outfile << "ELEM_K:      H8\n";
-	outfile << "NUM_ITER:    10\n";
+	outfile << "NUM_ITER:    40\n";
 }
 
 void TpdWriter::writeDimensions(std::ofstream &outfile, std::vector<int> dimensions){
