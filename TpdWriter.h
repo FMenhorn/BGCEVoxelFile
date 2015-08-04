@@ -28,16 +28,7 @@ public:
 	void writeNodes(std::ofstream &outfile, VoxelListCategorizer &voxelListCategorizer);
 	void writeLoads(std::ofstream &outfile, std::string variableName, double value, int number);
 
-
-	void calculateFixtureNodes(std::string data, VoxelListCategorizer &voxelListCategorizer,std::vector<int> cellArray, std::vector<int> dimensions);
-	void calculateLoadNodes(std::string data, VoxelListCategorizer &voxelListCategorizer,std::vector<int> cellArray, std::vector<int> dimensions);
-
-	void writeCellList(std::string variableName, std::list<int> cellIndices, std::ofstream &outfile);
-
-	static int getCellIndex(int xCoord, int yCoord, int zCoord, std::vector<int> dimensions);
-	static std::vector<int> getCellCoordinates(int index, std::vector<int> dimensions);
-
-
+private:
 	void writeCellList(std::ofstream &outfile, std::string variableName, std::list<int> cellIndices);
 };
 

@@ -9,6 +9,7 @@
 #include "VtkWriter.h"
 #include "TpdWriter.h"
 #include "VoxelListCategorizer.h"
+#include "VoxelToTopy.h"
 
 /* Converts the voxelizer output file to an VTK file that can be viewed in Paraview. */
 
@@ -77,15 +78,16 @@ int main(int argc, char** argv)
   outfile.open("ToPyTest.tpd", ios::out);
   TpdWriter tpdWriter;
   VoxelListCategorizer voxelListCategorizer;
+  VoxelToTopy voxelToTopy;
   voxelListCategorizer.readArrayOfCells(voxelArray, dimensions);
 
-  tpdWriter.writeHeader(outfile, std::string("fooFoOFOO"));
+  tpdWriter.writeHeader(outfile, std::string("Star_ToOp"));
   tpdWriter.writeDimensions(outfile, dimensions);
-  tpdWriter.calculateFixtureNodes(std::string("Star"),voxelListCategorizer, voxelArray, dimensions);
-  tpdWriter.calculateLoadNodes(std::string("Star"), voxelListCategorizer, voxelArray, dimensions);
-  tpdWriter.writeNodes(outfile, voxelListCategorizer);
-
   tpdWriter.writeGreyScaleFilters(outfile);
+
+  voxelToTopy.calculateFixtureNodes(std::string("Star"),voxelListCategorizer, voxelArray, dimensions);
+  voxelToTopy.calculateLoadNodes(std::string("Star"), voxelListCategorizer, voxelArray, dimensions);
+  tpdWriter.writeNodes(outfile, voxelListCategorizer);
 
   outfile.close();
 
