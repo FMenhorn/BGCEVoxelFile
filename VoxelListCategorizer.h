@@ -90,6 +90,20 @@ public:
 		this->passiveIndices = passiveIndices;
 	}
 
+	static std::vector<int> getCellCoordinates(int index, std::vector<int> dimensions)
+	{
+	std::vector<int> returnCoords(3);
+
+	returnCoords[0] = index%dimensions[0];
+	//temporary
+	returnCoords[2] = (index-returnCoords[0])/dimensions[0];
+	returnCoords[1] = returnCoords[2] % dimensions[1];
+	returnCoords[2] = (returnCoords[2] - returnCoords[1]) / dimensions[1];
+
+	return returnCoords;
+
+	}
+
 private:
 	std::list<int> fixedIndicesX, fixedIndicesY, fixedIndicesZ;
 	std::list<int> loadedIndicesX, loadedIndicesY, loadedIndicesZ;
