@@ -81,21 +81,25 @@ void TpdWriter::calculateFixtureNodes(std::string data, VoxelListCategorizer &vo
 	if(data.compare("Star")==0	){
 		for(int i = 0; i < cellArray.size(); ++i){
 			if(cellArray[i] == 1){
-				coordinates = getCellCoordinates(i,dimensions);
+				coordinates = VoxelListCategorizer::getCellCoordinates(i,dimensions);
 				if(coordinates[0] <= 1 || coordinates[0] >= dimensions[0]-1 ||
 				   coordinates[2] <= 1 || coordinates[2] >= dimensions[2]-1){
 					std::cout << "Coordinates: " << i << "|" << coordinates[0] << "," << coordinates[1] << "," << coordinates[2] << "\n";
-					fixedIndicesXTmp.push_back(i);
-					fixedIndicesYTmp.push_back(i);
-					fixedIndicesZTmp.push_back(i);
+					//fixedIndicesXTmp.push_back(getCellIndex(coordinates[0],coordinates[1],coordinates[2],dimensions));
+					fixedIndicesYTmp.push_back(getCellIndex(coordinates[0],coordinates[1],coordinates[2],dimensions));
+					//fixedIndicesZTmp.push_back(getCellIndex(coordinates[0],coordinates[1],coordinates[2],dimensions));
 			    }
 			}
 		}
+		fixedIndicesXTmp.push_back(getCellIndex(coordinates[0],coordinates[1],coordinates[2],dimensions));
+		fixedIndicesZTmp.push_back(getCellIndex(coordinates[0],coordinates[1],coordinates[2],dimensions));
 		voxelListCategorizer.setFixedIndicesX(fixedIndicesXTmp);
 		voxelListCategorizer.setFixedIndicesY(fixedIndicesYTmp);
 		voxelListCategorizer.setFixedIndicesZ(fixedIndicesZTmp);
 	}
-	std::cout << "Length" << cellArray.size() << "," << voxelListCategorizer.getFixedIndicesX().size() << std::endl;
+	std::cout << "LengthX" << cellArray.size() << "," << voxelListCategorizer.getFixedIndicesX().size() << std::endl;
+	std::cout << "LengthY" << cellArray.size() << "," << voxelListCategorizer.getFixedIndicesY().size() << std::endl;
+	std::cout << "LengthZ" << cellArray.size() << "," << voxelListCategorizer.getFixedIndicesZ().size() << std::endl;
 }
 
 void TpdWriter::calculateLoadNodes(std::string data, VoxelListCategorizer &voxelListCategorizer,std::vector<int> cellArray, std::vector<int> dimensions){
@@ -116,10 +120,7 @@ void TpdWriter::calculateLoadNodes(std::string data, VoxelListCategorizer &voxel
 void TpdWriter::writeCellList(std::ofstream &outfile,
 		std::string variableName,
 		std::list<int> cellIndices) {
-
-
 	outfile<< variableName << ": ";
-
 	if(cellIndices.size()>0)
 	{
 
@@ -143,18 +144,18 @@ void TpdWriter::writeCellList(std::ofstream &outfile,
 
 int TpdWriter::getCellIndex(int xCoord, int yCoord, int zCoord,
 		std::vector<int> dimensions) {
-	return xCoord + dimensions[0]*(yCoord + dimensions[1] * zCoord);
+	return yCoord + dimensions[1]*(xCoord + dimensions[0] * zCoord);
 }
 
 std::vector<int> TpdWriter::getCellCoordinates(int index,
 		std::vector<int> dimensions) {
 	std::vector<int> returnCoords(3);
 
-	returnCoords[0] = index%dimensions[0];
+	returnCoords[1] = index%dimensions[1];
 	//temporary
-	returnCoords[2] = (index-returnCoords[0])/dimensions[0];
-	returnCoords[1] = returnCoords[2] % dimensions[1];
-	returnCoords[2] = (returnCoords[2] - returnCoords[1]) / dimensions[1];
+	returnCoords[2] = (index-returnCoords[1])/dimensions[1];
+	returnCoords[0] = returnCoords[2] % dimensions[0];
+	returnCoords[2] = (returnCoords[2] - returnCoords[0]) / dimensions[0];
 
 	return returnCoords;
 
