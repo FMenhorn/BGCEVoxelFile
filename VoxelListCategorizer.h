@@ -24,7 +24,7 @@ public:
 	virtual ~VoxelListCategorizer();
 
 	void addCellToLists(int cellIndex, VoxelCategories cellFlag);
-	void readArrayOfCells(std::vector<int> cellArray);
+	void readArrayOfCells(std::vector<int> cellArray, std::vector<int> dimensions);
 
 	const std::list<int>& getActiveIndices() const {
 		return activeIndices;
@@ -88,6 +88,20 @@ public:
 
 	void setPassiveIndices(const std::list<int>& passiveIndices) {
 		this->passiveIndices = passiveIndices;
+	}
+
+	static std::vector<int> getCellCoordinates(int index, std::vector<int> dimensions)
+	{
+	std::vector<int> returnCoords(3);
+
+	returnCoords[0] = index%dimensions[0];
+	//temporary
+	returnCoords[2] = (index-returnCoords[0])/dimensions[0];
+	returnCoords[1] = returnCoords[2] % dimensions[1];
+	returnCoords[2] = (returnCoords[2] - returnCoords[1]) / dimensions[1];
+
+	return returnCoords;
+
 	}
 
 private:
