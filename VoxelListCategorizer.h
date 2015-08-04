@@ -23,7 +23,7 @@ public:
 
 	virtual ~VoxelListCategorizer();
 
-	void addCellToLists(int cellIndex, VoxelCategories cellFlag);
+	void addCellToLists(int cellIndex, VoxelCategories cellFlag, std::vector<int> dimensions);
 	void readArrayOfCells(std::vector<int> cellArray, std::vector<int> dimensions);
 
 	std::list<int>& getActiveIndices() {

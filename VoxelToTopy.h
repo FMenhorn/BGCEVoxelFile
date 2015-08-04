@@ -24,8 +24,10 @@ public:
 	void calculateFixtureNodes(std::string data, VoxelListCategorizer &voxelListCategorizer,std::vector<int> cellArray, std::vector<int> dimensions);
 	void calculateLoadNodes(std::string data, VoxelListCategorizer &voxelListCategorizer,std::vector<int> cellArray, std::vector<int> dimensions);
 
-	static int convertIndex(int index, std::vector<int> dimensions);
+	static int convertIndexCell(int index, std::vector<int> dimensions);
+	static int convertIndexNode(int index, std::vector<int> dimensions);
 	static int getCellIndex(int xCoord, int yCoord, int zCoord, std::vector<int> dimensions);
+	static int getNodeIndex(int xCoord, int yCoord, int zCoord,std::vector<int> dimensions);
 	static std::vector<int> getCellCoordinates(int index, std::vector<int> dimensions);
 };
 

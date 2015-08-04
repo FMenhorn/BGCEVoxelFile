@@ -30,26 +30,51 @@ void VoxelToTopy::calculateFixtureNodes(std::string data, VoxelListCategorizer &
 				if(coordinates[0] <= 3 || coordinates[0] >= dimensions[0]-3 ||
 				   coordinates[2] <= 3 || coordinates[2] >= dimensions[2]-3){
 
-					//voxelListCategorizer.getActiveIndices().push_back(getCellIndex(coordinates[0],coordinates[1],coordinates[2],dimensions));
+					voxelListCategorizer.getActiveIndices().push_back(VoxelToTopy::convertIndexCell(i,dimensions));
 
 					std::cout << "Coordinates: " << i << "|" << coordinates[0] << "," << coordinates[1] << "," << coordinates[2] << "\n";
 
-					//fixedIndicesXTmp.push_back(getCellIndex(coordinates[0],coordinates[1],coordinates[2],dimensions));
-					fixedIndicesYTmp.push_back(VoxelToTopy::convertIndex(i,dimensions));
-					//fixedIndicesZTmp.push_back(getCellIndex(coordinates[0],coordinates[1],coordinates[2],dimensions));
+					//fixedIndicesXTmp.push_back(VoxelToTopy::convertIndex(i,dimensions));
+					fixedIndicesYTmp.push_back(VoxelToTopy::convertIndexNode(i,dimensions));
+					//fixedIndicesZTmp.push_back(VoxelToTopy::convertIndex(i,dimensions));
+
+					counter = i;
 				}
 			}
-			counter = i;
 		}
-		fixedIndicesXTmp.push_back(VoxelToTopy::convertIndex(counter,dimensions));
-		fixedIndicesZTmp.push_back(VoxelToTopy::convertIndex(counter,dimensions));
+		fixedIndicesXTmp.push_back(VoxelToTopy::convertIndexNode(counter,dimensions));
+		fixedIndicesZTmp.push_back(VoxelToTopy::convertIndexNode(counter,dimensions));
+		voxelListCategorizer.setFixedIndicesX(fixedIndicesXTmp);
+		voxelListCategorizer.setFixedIndicesY(fixedIndicesYTmp);
+		voxelListCategorizer.setFixedIndicesZ(fixedIndicesZTmp);
+	}
+	else if(data.compare("Cube")==0)
+	{
+		for(int i = 0; i < cellArray.size(); ++i){
+			if(cellArray[i] == 1){
+				coordinates = VoxelToTopy::getCellCoordinates(i,dimensions);
+				if(coordinates[0] == 0){
+
+					voxelListCategorizer.getActiveIndices().push_back(VoxelToTopy::convertIndexCell(i,dimensions));
+
+					std::cout << "Coordinates: " << i << "|" << coordinates[0] << "," << coordinates[1] << "," << coordinates[2] << "\n";
+
+					fixedIndicesXTmp.push_back(VoxelToTopy::convertIndexNode(i,dimensions));
+					fixedIndicesYTmp.push_back(VoxelToTopy::convertIndexNode(i,dimensions));
+					//fixedIndicesZTmp.push_back(VoxelToTopy::convertIndex(i,dimensions));
+
+					counter = i;
+				}
+			}
+		}
+		fixedIndicesZTmp.push_back(VoxelToTopy::convertIndexNode(counter,dimensions));
 		voxelListCategorizer.setFixedIndicesX(fixedIndicesXTmp);
 		voxelListCategorizer.setFixedIndicesY(fixedIndicesYTmp);
 		voxelListCategorizer.setFixedIndicesZ(fixedIndicesZTmp);
 	}
 	else
 	{
-		std::cout << "TpdWriter::calculateFixtureNodes: Wrong scenario!\n";
+		std::cout << "VoxelToTopy::calculateFixtureNodes: Wrong scenario!\n";
 		exit(-1);
 	}
 	std::cout << "LengthX" << cellArray.size() << "," << voxelListCategorizer.getFixedIndicesX().size() << std::endl;
@@ -74,18 +99,52 @@ void VoxelToTopy::calculateLoadNodes(std::string data, VoxelListCategorizer &vox
 				distx = coordinates[0]-center[0];
 				distz = coordinates[2]-center[2];
 				if(distx*distx + distz*distz  <= 36 && distx*distx + distz*distz  >= 16){
-					voxelListCategorizer.getActiveIndices().push_back(VoxelToTopy::convertIndex(i,dimensions));
-					loadIndicesYTmp.push_back(VoxelToTopy::convertIndex(i,dimensions));
+					voxelListCategorizer.getActiveIndices().push_back(VoxelToTopy::convertIndexCell(i,dimensions));
+					loadIndicesYTmp.push_back(VoxelToTopy::convertIndexNode(i,dimensions));
 				}
 			}
 		}
 		voxelListCategorizer.setLoadedIndicesY(loadIndicesYTmp);
 	}
+	else if(data.compare("Cube")==0)
+	{
+		for(int i = 0; i < cellArray.size(); ++i){
+			if(cellArray[i] == 1){
+				coordinates = VoxelToTopy::getCellCoordinates(i,dimensions);
+				if(coordinates[0]  == dimensions[0]-2 && coordinates[1] == dimensions[1]-2 && coordinates[2] == static_cast<int>(dimensions[2]/2)){
+					//voxelListCategorizer.getActiveIndices().push_back(VoxelToTopy::convertIndexCell(i,dimensions));
+					loadIndicesYTmp.push_back(VoxelToTopy::convertIndexNode(i,dimensions));
+				}
+			}
+		}
+		voxelListCategorizer.setLoadedIndicesY(loadIndicesYTmp);
+	}
+	else
+	{
+		std::cout << "VoxelToTopy::calculateLoadNodes: Wrong scenario!\n";
+		exit(-1);
+	}
+	std::cout << "LoadY" << cellArray.size() << "," << voxelListCategorizer.getLoadedIndicesY().size() << std::endl;
 }
 
-int VoxelToTopy::convertIndex(int index, std::vector<int> dimensions){
+int VoxelToTopy::convertIndexCell(int index, std::vector<int> dimensions){
 	std::vector<int> temp = VoxelToTopy::getCellCoordinates(index,dimensions);
 	return VoxelToTopy::getCellIndex(temp[0],temp[1],temp[2],dimensions);
+}
+
+int VoxelToTopy::getCellIndex(int xCoord, int yCoord, int zCoord,
+		std::vector<int> dimensions) {
+	return yCoord + dimensions[1]*(xCoord + dimensions[0] * zCoord);
+}
+
+int VoxelToTopy::convertIndexNode(int index, std::vector<int> dimensions){
+	std::vector<int> temp = VoxelToTopy::getCellCoordinates(index,dimensions);
+	return VoxelToTopy::getNodeIndex(temp[0],temp[1],temp[2],dimensions);
+}
+
+int VoxelToTopy::getNodeIndex(int xCoord, int yCoord, int zCoord,
+		std::vector<int> dimensions) {
+	return yCoord + (dimensions[1]+1)*(xCoord + (dimensions[0]+1) * zCoord);
 }
 
 std::vector<int> VoxelToTopy::getCellCoordinates(int index, std::vector<int> dimensions)
@@ -102,7 +161,3 @@ return returnCoords;
 
 }
 
-int VoxelToTopy::getCellIndex(int xCoord, int yCoord, int zCoord,
-		std::vector<int> dimensions) {
-	return yCoord + dimensions[1]*(xCoord + dimensions[0] * zCoord);
-}

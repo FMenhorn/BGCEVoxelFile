@@ -17,32 +17,32 @@ VoxelListCategorizer::~VoxelListCategorizer() {
 	// TODO Auto-generated destructor stub
 }
 
-void VoxelListCategorizer::addCellToLists(int cellIndex, VoxelCategories cellFlag) {
+void VoxelListCategorizer::addCellToLists(int cellIndex, VoxelCategories cellFlag, std::vector<int> dimensions) {
 	switch(cellFlag)
 	{
 	case FIXED_X:
-		fixedIndicesX.push_back(cellIndex);
+		fixedIndicesX.push_back(VoxelToTopy::convertIndexNode(cellIndex,dimensions));
 		break;
 	case FIXED_Y:
-		fixedIndicesY.push_back(cellIndex);
+		fixedIndicesY.push_back(VoxelToTopy::convertIndexNode(cellIndex,dimensions));
 		break;
 	case FIXED_Z:
-		fixedIndicesZ.push_back(cellIndex);
+		fixedIndicesZ.push_back(VoxelToTopy::convertIndexNode(cellIndex,dimensions));
 		break;
 	case LOADED_X:
-		loadedIndicesX.push_back(cellIndex);
+		loadedIndicesX.push_back(VoxelToTopy::convertIndexNode(cellIndex,dimensions));
 		break;
 	case LOADED_Y:
-		loadedIndicesY.push_back(cellIndex);
+		loadedIndicesY.push_back(VoxelToTopy::convertIndexNode(cellIndex,dimensions));
 		break;
 	case LOADED_Z:
-		loadedIndicesZ.push_back(cellIndex);
+		loadedIndicesZ.push_back(VoxelToTopy::convertIndexNode(cellIndex,dimensions));
 		break;
 	case ACTIVE:
-		activeIndices.push_back(cellIndex);
+		activeIndices.push_back(VoxelToTopy::convertIndexCell(cellIndex,dimensions));
 		break;
 	case PASSIVE:
-		passiveIndices.push_back(cellIndex);
+		passiveIndices.push_back(VoxelToTopy::convertIndexCell(cellIndex,dimensions));
 		break;
 	default:
 		break;
@@ -54,7 +54,7 @@ void VoxelListCategorizer::readArrayOfCells(std::vector<int> cellArray, std::vec
 
 	for(int cellIndex = 0; cellIndex < cellArray.size(); ++cellIndex )
 	{
-		addCellToLists(VoxelToTopy::convertIndex(cellIndex,dimensions),static_cast<VoxelCategories>(cellArray[cellIndex]));
+		addCellToLists(cellIndex,static_cast<VoxelCategories>(cellArray[cellIndex]), dimensions);
 	}
 }
 

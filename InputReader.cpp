@@ -44,8 +44,8 @@ int main(int argc, char** argv)
   ofstream outfile;
 
   /// TODO: Add open success checks
-  infile.open("STLFiles/Star.dat", ios::binary | ios::in);
-  outfile.open("Star.vtk", ios::out);
+  infile.open("STLFiles/20mm_cube.dat", ios::binary | ios::in);
+  outfile.open("Cube.vtk", ios::out);
 
   vtkWriter.writeHeader(outfile);
 
@@ -75,18 +75,18 @@ int main(int argc, char** argv)
 
   free(data_buffer);
 
-  outfile.open("ToPyTest.tpd", ios::out);
+  outfile.open("ToPyTestCube.tpd", ios::out);
   TpdWriter tpdWriter;
   VoxelListCategorizer voxelListCategorizer;
   VoxelToTopy voxelToTopy;
   voxelListCategorizer.readArrayOfCells(voxelArray, dimensions);
 
-  tpdWriter.writeHeader(outfile, std::string("Star_ToOp"));
+  tpdWriter.writeHeader(outfile, std::string("Cube_ToOp"));
   tpdWriter.writeDimensions(outfile, dimensions);
   tpdWriter.writeGreyScaleFilters(outfile);
 
-  voxelToTopy.calculateFixtureNodes(std::string("Star"),voxelListCategorizer, voxelArray, dimensions);
-  voxelToTopy.calculateLoadNodes(std::string("Star"), voxelListCategorizer, voxelArray, dimensions);
+  voxelToTopy.calculateFixtureNodes(std::string("Cube"),voxelListCategorizer, voxelArray, dimensions);
+  voxelToTopy.calculateLoadNodes(std::string("Cube"), voxelListCategorizer, voxelArray, dimensions);
   tpdWriter.writeNodes(outfile, voxelListCategorizer);
 
   outfile.close();
