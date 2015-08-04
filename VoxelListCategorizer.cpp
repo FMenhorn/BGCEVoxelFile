@@ -6,6 +6,7 @@
  */
 
 #include "VoxelListCategorizer.h"
+#include "TpdWriter.h"
 
 VoxelListCategorizer::VoxelListCategorizer() {
 	// TODO Auto-generated constructor stub
@@ -49,11 +50,17 @@ void VoxelListCategorizer::addCellToLists(int cellIndex, VoxelCategories cellFla
 
 }
 
-void VoxelListCategorizer::readArrayOfCells(std::vector<int> cellArray) {
+int convertIndex(int index, std::vector<int> dimensions){
+	std::vector<int> temp = VoxelListCategorizer::getCellCoordinates(index,dimensions);
+	return TpdWriter::getCellIndex(temp[0],temp[1],temp[2],dimensions);
+}
+
+void VoxelListCategorizer::readArrayOfCells(std::vector<int> cellArray, std::vector<int> dimensions) {
 
 	for(int cellIndex = 0; cellIndex < cellArray.size(); ++cellIndex )
 	{
-		addCellToLists(cellIndex,static_cast<VoxelCategories>(cellArray[cellIndex]));
+
+		addCellToLists(convertIndex(cellIndex,dimensions),static_cast<VoxelCategories>(cellArray[cellIndex]));
 	}
 }
 
