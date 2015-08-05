@@ -4,6 +4,12 @@
 #include <cstdlib>
 #include <bitset>
 #include <cstring>
+#include <vector>
+
+#include "VtkWriter.h"
+#include "TpdWriter.h"
+#include "VoxelListCategorizer.h"
+#include "VoxelToTopy.h"
 
 /* Converts the voxelizer output file to an VTK file that can be viewed in Paraview. */
 
@@ -11,11 +17,12 @@ using namespace std;
 
 int main(int argc, char** argv)
 {
-  /* The data_buffer is used to reaf data from the voxelizer output file and write to the VTK side-by-side. */
+  /* The data_buffer is used to read data from the voxelizer output file and write to the VTK side-by-side. */
   /// TODO: Alter this buffer to make it of a larger size (currently only 1 Byte)
 
   char *data_buffer;
   int size_of_data_buffer = 1;
+  std::vector<int> voxelArray;
   data_buffer = new char[size_of_data_buffer];
 
   /* The dimensions_buffer is used to pick up the x-, y-, and z-number of voxels in the voxelizer output file.
@@ -28,49 +35,61 @@ int main(int argc, char** argv)
   dimensions_buffer = new char[size_of_dimensions_buffer];
   float deltaDim = 0.05;
 
-  long int dimensions[3];
+  long int dimensionsLong[3];
+  std::vector<int> dimensions(3);
+
+  VtkWriter vtkWriter;
 
   ifstream infile;
   ofstream outfile;
 
-  /// TODO:
-  /// 1. Add open success checks
-  /// 2. Make infile and outfile user inputs
-  infile.open("STLFiles/Star.dat", ios::binary | ios::in);
-  outfile.open("Star.vtk", ios::out);
+  /// TODO: Add open success checks
+  infile.open("STLFiles/20mm_cube.dat", ios::binary | ios::in);
+  outfile.open("Cube.vtk", ios::out);
 
-  outfile << "# vtk DataFile Version 2.0\n";
-  outfile << "BGCE Project 2015-16\n";
-  outfile << "ASCII\n";
-  outfile << "\n";
-  outfile << "DATASET STRUCTURED_POINTS\n";
+  vtkWriter.writeHeader(outfile);
 
   /* Read in the dimensions from the voxelizer output file. Skip the first byte (useless) */
   infile.seekg(1, ios::beg);
   infile.read(dimensions_buffer, size_of_dimensions_buffer);
-  std::memcpy(&dimensions[0], &dimensions_buffer[0], 24);
+  std::memcpy(&dimensionsLong[0], &dimensions_buffer[0], 24);
+  for(int i = 0; i<3; ++i){
+	  dimensions[2-i] = static_cast<int>(dimensionsLong[i]);
+  }
   free(dimensions_buffer);
   int total_points = dimensions[0]*dimensions[1]*dimensions[2];
 
-  outfile << "DIMENSIONS  " << (int)dimensions[2] << " " << (int)dimensions[1] << " " << (int)dimensions[0] << "\n";
-  outfile << "ORIGIN " << 0 << " " << 0 << " " << 0 << "\n";
-  outfile << "SPACING " << deltaDim << " " << deltaDim << " " << deltaDim << "\n";
+  vtkWriter.writeStructuredGrid(outfile, dimensions, deltaDim);
 
-  outfile << "\n";
-  outfile << "POINT_DATA " << total_points << " \n";
-  outfile << "SCALARS density float 1 \n";
-  outfile << "LOOKUP_TABLE default \n";
-
-  /* Skip the first 1 + 3*8 = 25 bytes, and start reading in the data. Write it simultaneous to the VTK file */
+  /* Skip the first 1 + 3*8 = 25 bytes, and start reading in the data. Write it simultaneous to the VTK file and to the voxelArray */
   infile.seekg(25, ios::beg);
   for (int i = 0; i < total_points; i++){
     infile.read(data_buffer, size_of_data_buffer);
-    outfile << (float)data_buffer[0] << "\n";
+    voxelArray.push_back((int)data_buffer[0]);
   }
+
+  vtkWriter.writeScalars(outfile, std::string("density"), voxelArray);
 
   infile.close();
   outfile.close();
+
   free(data_buffer);
+
+  outfile.open("ToPyTestCube.tpd", ios::out);
+  TpdWriter tpdWriter;
+  VoxelListCategorizer voxelListCategorizer;
+  VoxelToTopy voxelToTopy;
+  voxelListCategorizer.readArrayOfCells(voxelArray, dimensions);
+
+  tpdWriter.writeHeader(outfile, std::string("Cube_ToOp"));
+  tpdWriter.writeDimensions(outfile, dimensions);
+  tpdWriter.writeGreyScaleFilters(outfile);
+
+  voxelToTopy.calculateFixtureNodes(std::string("Cube"),voxelListCategorizer, voxelArray, dimensions);
+  voxelToTopy.calculateLoadNodes(std::string("Cube"), voxelListCategorizer, voxelArray, dimensions);
+  tpdWriter.writeNodes(outfile, voxelListCategorizer);
+
+  outfile.close();
 
   return 0;
 }
